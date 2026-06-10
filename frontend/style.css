@@ -267,7 +267,7 @@ ul {
     display: flex;
     align-items: center;
     position: relative;
-    background: url('assets/images/hero_bg_1779976174019.png') no-repeat center center/cover;
+    background: url('../assets/images/hero_bg_1779976174019.png') no-repeat center center/cover;
 }
 
 .hero-overlay {
@@ -391,12 +391,12 @@ section {
 }
 
 .img-1 {
-    background-image: url('assets/images/product_table_1779976252061.png');
+    background-image: url('../assets/images/product_table_1779976252061.png');
     transform: translateY(30px);
 }
 
 .img-2 {
-    background-image: url('assets/images/product_office_1779976267938.png');
+    background-image: url('../assets/images/product_office_1779976267938.png');
 }
 
 /* Products Section */
@@ -630,7 +630,7 @@ section {
 /* Careers Section */
 .careers {
     position: relative;
-    background: url('assets/images/hiring_banner_1779976194190.png') no-repeat center center/cover;
+    background: url('../assets/images/hiring_banner_1779976194190.png') no-repeat center center/cover;
     background-attachment: fixed;
     color: #fff;
 }
@@ -968,4 +968,16 @@ footer {
         justify-content: center;
         flex-wrap: wrap;
     }
+}
+
+/* Professional Fly Animation for Send Button */
+@keyframes flyOff {
+    0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
+    20% { transform: translate(-5px, 5px) scale(1.1) rotate(-10deg); opacity: 1; }
+    100% { transform: translate(60px, -60px) scale(0) rotate(45deg); opacity: 0; }
+}
+
+.fly-anim i {
+    animation: flyOff 0.7s forwards cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
 }

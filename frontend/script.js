@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
             category: "home",
             description: "Strong double steel cot with good paint.",
             price: "₹12,500",
-            image: "assets/images/product_cot_1779976217480.png"
+            image: "../assets/images/product_cot_1779976217480.png"
         },
         {
             id: 2,
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
             category: "home",
             description: "Big 3-door steel almirah with safe lock.",
             price: "₹15,000",
-            image: "assets/images/product_wardrobe_1779976231262.png"
+            image: "../assets/images/product_wardrobe_1779976231262.png"
         },
         {
             id: 3,
@@ -153,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
             category: "office",
             description: "Nice office desk with drawers for your things.",
             price: "₹8,500",
-            image: "assets/images/product_table_1779976252061.png"
+            image: "../assets/images/product_table_1779976252061.png"
         },
         {
             id: 4,
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
             category: "office",
             description: "Full set of office furniture with desks and chairs.",
             price: "₹45,000",
-            image: "assets/images/product_office_1779976267938.png"
+            image: "../assets/images/product_office_1779976267938.png"
         },
         {
             id: 5,
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             category: "home",
             description: "Strong bed for two people, good for kids.",
             price: "₹18,000",
-            image: "https://images.unsplash.com/photo-1550581190-9c1c48d21d6c?auto=format&fit=crop"
+            image: "../assets/images/product_bunk_bed_1781106868469.png"
         },
         {
             id: 6,
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
             category: "custom",
             description: "Strong steel racks made to fit your shop or godown.",
             price: "Custom",
-            image: "https://images.unsplash.com/photo-1580130095842-1e9d1dc9d8dd?auto=format&fit=crop"
+            image: "../assets/images/product_storage_rack_1781106885351.png"
         }
     ];
 
@@ -324,36 +324,101 @@ document.addEventListener('DOMContentLoaded', () => {
         renderProducts(filtered);
     });
 
-    // 8. Form Submissions (Prevent Default for demo)
-    const forms = document.querySelectorAll('form');
-    forms.forEach(form => {
-        form.addEventListener('submit', (e) => {
+    // 8. Form Submissions and CAPTCHA
+    const contactForm = document.getElementById('contact-form');
+    const captchaQuestion = document.getElementById('captcha-question');
+    const contactResponse = document.getElementById('contact-response');
+    let captchaExpectedResult = 0;
+
+    // Generate random math CAPTCHA
+    function generateCaptcha() {
+        if (!captchaQuestion) return;
+        const num1 = Math.floor(Math.random() * 10) + 1;
+        const num2 = Math.floor(Math.random() * 10) + 1;
+        captchaExpectedResult = num1 + num2;
+        captchaQuestion.innerText = `Security Question: What is ${num1} + ${num2}?`;
+    }
+
+    // Initialize CAPTCHA
+    generateCaptcha();
+
+    if (contactForm) {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = form.querySelector('button[type="submit"]');
+            
+            const btn = contactForm.querySelector('button[type="submit"]');
             const originalText = btn.innerHTML;
             
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing...';
+            // Validate CAPTCHA
+            const userAnswer = parseInt(document.getElementById('contact-captcha').value);
+            if (userAnswer !== captchaExpectedResult) {
+                contactResponse.style.display = 'block';
+                contactResponse.style.backgroundColor = '#f8d7da';
+                contactResponse.style.color = '#721c24';
+                contactResponse.innerText = 'Incorrect security answer. Please try again.';
+                generateCaptcha();
+                document.getElementById('contact-captcha').value = '';
+                return;
+            }
+
+            // Get form data
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const phone = document.getElementById('contact-phone').value;
+            const subject = document.getElementById('contact-subject').value;
+            const message = document.getElementById('contact-message').value;
+            const honeypot = document.getElementById('contact-honeypot').value;
+
+            // Add professional fly animation to the paper-plane icon
+            btn.classList.add('fly-anim');
             btn.disabled = true;
+            contactResponse.style.display = 'none';
 
-            // Simulate API call
             setTimeout(() => {
-                btn.innerHTML = '<i class="fa-solid fa-check"></i> Success!';
-                btn.classList.replace('btn-primary', 'btn-outline');
-                btn.style.backgroundColor = '#25d366';
-                btn.style.borderColor = '#25d366';
-                btn.style.color = '#fff';
-                
-                form.reset();
+                try {
+                    // Permanently set to open Gmail to message
+                    const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=yuvarajwork25@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent("Name: " + name + "\nEmail: " + email + "\nPhone: " + phone + "\n\nMessage:\n" + message)}`;
+                    
+                    // Open Gmail in a new tab
+                    window.open(gmailComposeUrl, '_blank');
 
-                setTimeout(() => {
+                    // Show success message immediately since they are moved to Gmail
+                    btn.classList.remove('fly-anim');
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Redirecting...';
+                    btn.classList.replace('btn-primary', 'btn-outline');
+                    btn.style.backgroundColor = '#25d366';
+                    btn.style.borderColor = '#25d366';
+                    btn.style.color = '#fff';
+                    
+                    contactResponse.style.display = 'block';
+                    contactResponse.style.backgroundColor = '#d4edda';
+                    contactResponse.style.color = '#155724';
+                    contactResponse.innerText = 'Opening Gmail securely...';
+                    
+                    contactForm.reset();
+                    generateCaptcha();
+
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.classList.replace('btn-outline', 'btn-primary');
+                        btn.style = '';
+                        btn.disabled = false;
+                        contactResponse.style.display = 'none';
+                    }, 4000);
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    btn.classList.remove('fly-anim');
                     btn.innerHTML = originalText;
-                    btn.classList.replace('btn-outline', 'btn-primary');
-                    btn.style = '';
                     btn.disabled = false;
-                }, 3000);
-            }, 1500);
+                    
+                    contactResponse.style.display = 'block';
+                    contactResponse.style.backgroundColor = '#f8d7da';
+                    contactResponse.style.color = '#721c24';
+                    contactResponse.innerText = 'Something went wrong. Please try again later.';
+                }
+            }, 700); // Wait 700ms for animation to play before opening new tab
         });
-    });
+    }
     
     // 9. File Upload Name Display
     const fileInput = document.getElementById('resume');

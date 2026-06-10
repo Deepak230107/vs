@@ -83,11 +83,11 @@
                             <span>Years Experience</span>
                         </div>
                         <div class="stat-box">
-                            <h4 class="counter" data-target="1000">0</h4><span>+</span>
+                            <h4 class="counter" data-target="50">0</h4><span>+</span>
                             <span>Happy Clients</span>
                         </div>
                         <div class="stat-box">
-                            <h4 class="counter" data-target="50">0</h4><span>+</span>
+                            <h4 class="counter" data-target="15">0</h4><span>+</span>
                             <span>Products</span>
                         </div>
                     </div>
@@ -187,6 +187,17 @@
                     <p style="margin-bottom: 20px; color: var(--text-secondary);">We are looking for good workers. Please call or message us if you want a job.</p>
                     
                     <div style="display: flex; flex-direction: column; gap: 15px;">
+                        
+                        <!-- Resume Upload Feature -->
+                        <div class="form-group">
+                            <div class="file-upload">
+                                <label for="resume">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Resume/ID
+                                </label>
+                                <input type="file" id="resume" accept=".pdf,.doc,.docx,.jpg,.png">
+                            </div>
+                        </div>
+
                         <a href="tel:+916369252125" class="btn btn-primary w-100">
                             <i class="fa-solid fa-phone"></i> Call +91 63692 52125
                         </a>
@@ -194,7 +205,7 @@
                             <i class="fa-brands fa-whatsapp"></i> Message on WhatsApp
                         </a>
                         <a href="mailto:yuvarajwork25@gmail.com" class="btn btn-outline w-100" style="border-color: var(--primary); color: var(--primary);" onmouseover="this.style.backgroundColor='var(--primary)'; this.style.color='#fff';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--primary)';">
-                            <i class="fa-solid fa-envelope"></i> Email Resume
+                            <i class="fa-solid fa-envelope"></i> Email Us
                         </a>
                     </div>
                 </div>
@@ -246,19 +257,38 @@
                     <form id="contact-form">
                         <div class="form-row">
                             <div class="form-group half">
-                                <input type="text" placeholder="Your Name" required>
+                                <input type="text" id="contact-name" placeholder="Your Name" required>
                             </div>
                             <div class="form-group half">
-                                <input type="email" placeholder="Your Email" required>
+                                <input type="email" id="contact-email" placeholder="Your Email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <input type="tel" id="contact-phone" placeholder="Phone Number (Optional)">
+                            </div>
+                            <div class="form-group half">
+                                <input type="text" id="contact-subject" placeholder="Subject" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="text" placeholder="Subject" required>
+                            <textarea id="contact-message" rows="5" placeholder="Your Message" required></textarea>
                         </div>
-                        <div class="form-group">
-                            <textarea rows="5" placeholder="Your Message" required></textarea>
+                        
+                        <!-- Anti-Spam Measures -->
+                        <div style="display: none;">
+                            <input type="text" id="contact-honeypot" name="honeypot" tabindex="-1" autocomplete="off">
                         </div>
-                        <button type="submit" class="btn btn-primary">Send Message <i class="fa-solid fa-paper-plane"></i></button>
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label id="captcha-question" style="color: var(--text-secondary); margin-bottom: 8px; display: block; font-size: 0.9rem;">Security Question: What is 3 + 4?</label>
+                                <input type="text" id="contact-captcha" placeholder="Answer" required>
+                            </div>
+                            <div class="form-group half" style="display: flex; align-items: flex-end;">
+                                <button type="submit" class="btn btn-primary w-100" style="height: 50px;">Send Message <i class="fa-solid fa-paper-plane"></i></button>
+                            </div>
+                        </div>
+                        <div id="contact-response" style="margin-top: 15px; font-weight: 500; display: none; padding: 10px; border-radius: 5px;"></div>
                     </form>
                 </div>
             </div>
