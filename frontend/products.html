@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Vetrivel Steel Furniture - Quality Steel Furniture for Homes, Offices & Shops.">
+    <title>Vetrivel Steel Furniture | Premium Steel Furniture</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="light-mode">
+    <div class="loader-wrapper" id="loader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-hammer"></i> Vetrivel <span>Steel</span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="products.html" class="active">Products</a></li>
+                <li><a href="index.html#about">About Us</a></li>
+                <li><a href="index.html#careers">Careers</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button id="theme-toggle" class="theme-btn" aria-label="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <div class="hamburger" id="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+
+    <!-- Products Section -->
+    <section id="products" class="products">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Our <span class="text-gradient">Products</span></h2>
+                <p>See our different types of steel furniture</p>
+            </div>
+
+            <!-- Featured Product Carousel -->
+            <div class="carousel-container reveal">
+                <div class="carousel-track" id="carousel-track">
+                    <!-- Items injected by JS -->
+                </div>
+                <button class="carousel-btn prev-btn" id="prev-btn" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="carousel-btn next-btn" id="next-btn" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+                <div class="carousel-dots" id="carousel-dots"></div>
+            </div>
+
+
+            <!-- Search and Filter -->
+            <div class="product-controls reveal">
+                <div class="search-bar">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" id="product-search" placeholder="Search furniture...">
+                </div>
+                <div class="filter-buttons" id="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="home">Home</button>
+                    <button class="filter-btn" data-filter="office">Office</button>
+                    <button class="filter-btn" data-filter="custom">Custom</button>
+                </div>
+            </div>
+
+            <div class="products-grid" id="products-grid">
+                <!-- Product cards injected by JS -->
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 Vetrivel Steel Furniture. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>

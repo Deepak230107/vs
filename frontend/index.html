@@ -28,7 +28,7 @@
             
             <ul class="nav-links">
                 <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#products">Products</a></li>
+                <li><a href="products.html">Products</a></li>
                 <li><a href="#about">About Us</a></li>
                 <li><a href="#careers">Careers</a></li>
                 <li><a href="#contact">Contact</a></li>
@@ -121,22 +121,8 @@
             </div>
 
 
-            <!-- Search and Filter -->
-            <div class="product-controls reveal">
-                <div class="search-bar">
-                    <i class="fa-solid fa-search"></i>
-                    <input type="text" id="product-search" placeholder="Search furniture...">
-                </div>
-                <div class="filter-buttons" id="filter-buttons">
-                    <button class="filter-btn active" data-filter="all">All</button>
-                    <button class="filter-btn" data-filter="home">Home</button>
-                    <button class="filter-btn" data-filter="office">Office</button>
-                    <button class="filter-btn" data-filter="custom">Custom</button>
-                </div>
-            </div>
-
-            <div class="products-grid" id="products-grid">
-                <!-- Product cards injected by JS -->
+            <div style="text-align: center; margin-top: 40px;" class="reveal">
+                <a href="products.html" class="btn btn-primary" style="padding: 15px 40px; font-size: 1.2rem;">View All Products <i class="fa-solid fa-arrow-right"></i></a>
             </div>
         </div>
     </section>
@@ -187,16 +173,6 @@
                     <p style="margin-bottom: 20px; color: var(--text-secondary);">We are looking for good workers. Please call or message us if you want a job.</p>
                     
                     <div style="display: flex; flex-direction: column; gap: 15px;">
-                        
-                        <!-- Resume Upload Feature -->
-                        <div class="form-group">
-                            <div class="file-upload">
-                                <label for="resume">
-                                    <i class="fa-solid fa-cloud-arrow-up"></i> Upload Resume/ID
-                                </label>
-                                <input type="file" id="resume" accept=".pdf,.doc,.docx,.jpg,.png">
-                            </div>
-                        </div>
 
                         <a href="tel:+916369252125" class="btn btn-primary w-100">
                             <i class="fa-solid fa-phone"></i> Call +91 63692 52125
@@ -207,6 +183,27 @@
                         <a href="mailto:yuvarajwork25@gmail.com" class="btn btn-outline w-100" style="border-color: var(--primary); color: var(--primary);" onmouseover="this.style.backgroundColor='var(--primary)'; this.style.color='#fff';" onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--primary)';">
                             <i class="fa-solid fa-envelope"></i> Email Us
                         </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram Promo Section -->
+    <section id="instagram-promo" class="instagram-promo">
+        <div class="container">
+            <div class="insta-content reveal">
+                <div class="insta-text">
+                    <h2>Follow Us on <span class="insta-gradient-text">Instagram</span></h2>
+                    <p>Stay updated with our latest furniture designs, offers, and behind-the-scenes.</p>
+                    <p class="insta-handle">@vetrivel_steel_furniture</p>
+                    <a href="https://www.instagram.com/vetrivel_steel_furniture/" target="_blank" class="btn btn-insta">
+                        <i class="fa-brands fa-instagram"></i> Follow Now
+                    </a>
+                </div>
+                <div class="insta-mockup">
+                    <div class="insta-icon-large">
+                        <i class="fa-brands fa-instagram"></i>
                     </div>
                 </div>
             </div>
@@ -247,9 +244,7 @@
                     
                     <div class="social-links">
                         <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="https://www.instagram.com/vetrivel_steel_furniture/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
                     </div>
                 </div>
 

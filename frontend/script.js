@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. Sticky Navbar & Scroll Spy
     const navbar = document.getElementById('navbar');
     const sections = document.querySelectorAll('section');
-    
+
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             navbar.style.boxShadow = 'var(--shadow-md)';
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     counter.innerText = target;
                 }
             };
-            
+
             // Check if element is in view to start animation
             const rect = counter.getBoundingClientRect();
             if (rect.top < window.innerHeight && counter.innerText == '0') {
@@ -145,7 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
             category: "home",
             description: "Big 3-door steel almirah with safe lock.",
             price: "₹15,000",
-            image: "../assets/images/product_wardrobe_1779976231262.png"
+            image: "../assets/images/product_wardrobe_1779976231262.png",
+            video: "../assets/watermark-removed-product_be_separated_by_parts.mp4"
         },
         {
             id: 3,
@@ -190,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevBtn = document.getElementById('prev-btn');
     const nextBtn = document.getElementById('next-btn');
     const dotsContainer = document.getElementById('carousel-dots');
-    
+
     // Featured products for carousel
     const featuredProducts = products.slice(0, 4); // First 4 items
     let currentSlide = 0;
@@ -254,6 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- End Carousel Logic ---
 
     function renderProducts(productsToRender) {
+        if (!productsGrid) return;
         productsGrid.innerHTML = '';
         if (productsToRender.length === 0) {
             productsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">No products found.</p>';
@@ -265,19 +267,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.className = 'product-card reveal active';
             card.style.animationDelay = `${delay}ms`;
-            
+
+            // Check if product has a video
+            let mediaContent = '';
+            if (product.video) {
+                mediaContent = `<video src="${product.video}" autoplay loop muted playsinline></video>`;
+            } else {
+                mediaContent = `<img src="${product.image}" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop'">`;
+            }
+
             // For external links or fallback images if local not found, handle gracefully
             card.innerHTML = `
                 <div class="product-img">
-                    <img src="${product.image}" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop'">
+                    ${mediaContent}
                     <span class="product-category">${product.category.toUpperCase()}</span>
                 </div>
                 <div class="product-info">
                     <h3>${product.name}</h3>
                     <p>${product.description}</p>
-                    <div class="product-bottom">
-                        <a href="#contact" class="btn btn-primary btn-sm">Enquire</a>
-                    </div>
                 </div>
             `;
             productsGrid.appendChild(card);
@@ -296,33 +303,35 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.classList.add('active');
 
             const filterValue = btn.getAttribute('data-filter');
-            
+
             if (filterValue === 'all') {
                 renderProducts(products);
             } else {
                 const filtered = products.filter(p => p.category === filterValue);
                 renderProducts(filtered);
             }
-            
+
             // Clear search
             searchInput.value = '';
         });
     });
 
     // Search Logic
-    searchInput.addEventListener('input', (e) => {
-        const searchTerm = e.target.value.toLowerCase();
-        
-        // Reset filters when searching
-        filterBtns.forEach(b => b.classList.remove('active'));
-        document.querySelector('[data-filter="all"]').classList.add('active');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
 
-        const filtered = products.filter(p => 
-            p.name.toLowerCase().includes(searchTerm) || 
-            p.description.toLowerCase().includes(searchTerm)
-        );
-        renderProducts(filtered);
-    });
+            // Reset filters when searching
+            filterBtns.forEach(b => b.classList.remove('active'));
+            document.querySelector('[data-filter="all"]').classList.add('active');
+
+            const filtered = products.filter(p =>
+                p.name.toLowerCase().includes(searchTerm) ||
+                p.description.toLowerCase().includes(searchTerm)
+            );
+            renderProducts(filtered);
+        });
+    }
 
     // 8. Form Submissions and CAPTCHA
     const contactForm = document.getElementById('contact-form');
@@ -345,10 +354,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (contactForm) {
         contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const btn = contactForm.querySelector('button[type="submit"]');
             const originalText = btn.innerHTML;
-            
+
             // Validate CAPTCHA
             const userAnswer = parseInt(document.getElementById('contact-captcha').value);
             if (userAnswer !== captchaExpectedResult) {
@@ -378,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 try {
                     // Permanently set to open Gmail to message
                     const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=yuvarajwork25@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent("Name: " + name + "\nEmail: " + email + "\nPhone: " + phone + "\n\nMessage:\n" + message)}`;
-                    
+
                     // Open Gmail in a new tab
                     window.open(gmailComposeUrl, '_blank');
 
@@ -389,12 +398,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     btn.style.backgroundColor = '#25d366';
                     btn.style.borderColor = '#25d366';
                     btn.style.color = '#fff';
-                    
+
                     contactResponse.style.display = 'block';
                     contactResponse.style.backgroundColor = '#d4edda';
                     contactResponse.style.color = '#155724';
                     contactResponse.innerText = 'Opening Gmail securely...';
-                    
+
                     contactForm.reset();
                     generateCaptcha();
 
@@ -410,7 +419,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     btn.classList.remove('fly-anim');
                     btn.innerHTML = originalText;
                     btn.disabled = false;
-                    
+
                     contactResponse.style.display = 'block';
                     contactResponse.style.backgroundColor = '#f8d7da';
                     contactResponse.style.color = '#721c24';
@@ -419,19 +428,5 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 700); // Wait 700ms for animation to play before opening new tab
         });
     }
-    
-    // 9. File Upload Name Display
-    const fileInput = document.getElementById('resume');
-    if(fileInput) {
-        fileInput.addEventListener('change', function() {
-            const label = this.previousElementSibling;
-            if(this.files && this.files.length > 0) {
-                label.innerHTML = `<i class="fa-solid fa-file-check"></i> ${this.files[0].name}`;
-                label.style.color = 'var(--primary)';
-            } else {
-                label.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i> Upload Resume/ID`;
-                label.style.color = '';
-            }
-        });
-    }
+
 });
