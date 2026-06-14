@@ -154,7 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
             category: "office",
             description: "Nice office desk with drawers for your things.",
             price: "₹8,500",
-            image: "../assets/images/product_table_1779976252061.png"
+            image: "../assets/images/product_table_1779976252061.png",
+            video: "../assets/watermark-removed-yes_generate_video.mp4"
         },
         {
             id: 4,
@@ -170,7 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
             category: "home",
             description: "Strong bed for two people, good for kids.",
             price: "₹18,000",
-            image: "../assets/images/product_bunk_bed_1781106868469.png"
+            image: "../assets/images/product_bunk_bed_1781106868469.png",
+            video: "../assets/watermark-removed-yes_generate_video.mp4"
         },
         {
             id: 6,
@@ -178,7 +180,8 @@ document.addEventListener('DOMContentLoaded', () => {
             category: "custom",
             description: "Strong steel racks made to fit your shop or godown.",
             price: "Custom",
-            image: "../assets/images/product_storage_rack_1781106885351.png"
+            image: "../assets/images/product_storage_rack_1781106885351.png",
+            video: "../assets/watermark-removed-product_be_separated_by_parts (1).mp4"
         }
     ];
 
