@@ -130,60 +130,8 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', startCounters);
 
     // 7. Products Data & Filtering
-    const products = [
-        {
-            id: 1,
-            name: "Steel Cot",
-            category: "home",
-            description: "Strong double steel cot with good paint.",
-            price: "₹12,500",
-            image: "../assets/images/product_cot_1779976217480.png"
-        },
-        {
-            id: 2,
-            name: "Steel Wardrobe",
-            category: "home",
-            description: "Big 3-door steel almirah with safe lock.",
-            price: "₹15,000",
-            image: "../assets/images/product_wardrobe_1779976231262.png",
-            video: "../assets/watermark-removed-product_be_separated_by_parts.mp4"
-        },
-        {
-            id: 3,
-            name: "Office Table",
-            category: "office",
-            description: "Nice office desk with drawers for your things.",
-            price: "₹8,500",
-            image: "../assets/images/product_table_1779976252061.png",
-            video: "../assets/watermark-removed-yes_generate_video.mp4"
-        },
-        {
-            id: 4,
-            name: "Office Furniture Set",
-            category: "office",
-            description: "Full set of office furniture with desks and chairs.",
-            price: "₹45,000",
-            image: "../assets/images/product_office_1779976267938.png"
-        },
-        {
-            id: 5,
-            name: "Steel Bunk Bed",
-            category: "home",
-            description: "Strong bed for two people, good for kids.",
-            price: "₹18,000",
-            image: "../assets/images/product_bunk_bed_1781106868469.png",
-            video: "../assets/watermark-removed-yes_generate_video.mp4"
-        },
-        {
-            id: 6,
-            name: "Storage Rack",
-            category: "custom",
-            description: "Strong steel racks made to fit your shop or godown.",
-            price: "Custom",
-            image: "../assets/images/product_storage_rack_1781106885351.png",
-            video: "../assets/watermark-removed-product_be_separated_by_parts (1).mp4"
-        }
-    ];
+    // NOTE: `products` array is defined in products.html inside a <script> block
+    // before this script.js is loaded — it is available here as a global variable.
 
     const productsGrid = document.getElementById('products-grid');
     const filterBtns = document.querySelectorAll('.filter-btn');
@@ -261,41 +209,88 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!productsGrid) return;
         productsGrid.innerHTML = '';
         if (productsToRender.length === 0) {
-            productsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-secondary);">No products found.</p>';
+            productsGrid.innerHTML = '<p style="padding:80px; text-align:center; color:#71717a; font-size:1.2rem;">No products found.</p>';
             return;
         }
 
         productsToRender.forEach((product, index) => {
-            const delay = index * 100; // Staggered animation
             const card = document.createElement('div');
-            card.className = 'product-card reveal active';
-            card.style.animationDelay = `${delay}ms`;
+            card.className = 'product-card';
 
-            // Check if product has a video
-            let mediaContent = '';
-            if (product.video) {
-                mediaContent = `<video src="${product.video}" autoplay loop muted playsinline></video>`;
-            } else {
-                mediaContent = `<img src="${product.image}" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop'">`;
-            }
+            // Media: video takes priority over image
+            let mediaContent = product.video
+                ? `<video src="${product.video}" autoplay loop muted playsinline></video>`
+                : `<img src="${product.image}" alt="${product.name}" onerror="this.src='https://images.unsplash.com/photo-1505843490538-5133c6c7d0e1?auto=format&fit=crop'">`;
 
-            // For external links or fallback images if local not found, handle gracefully
+
             card.innerHTML = `
                 <div class="product-img">
                     ${mediaContent}
                     <span class="product-category">${product.category.toUpperCase()}</span>
                 </div>
-                <div class="product-info">
+                <div class="product-info" data-index="0${index + 1}">
+                    <div class="accent-line"></div>
                     <h3>${product.name}</h3>
                     <p>${product.description}</p>
                 </div>
             `;
             productsGrid.appendChild(card);
         });
+
+        // IntersectionObserver: add 'in-view' class when card enters viewport
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    updateScrollNav();
+                }
+            });
+        }, { threshold: 0.45 });
+
+        document.querySelectorAll('.product-card').forEach(card => observer.observe(card));
+
+        // Mark first card visible immediately
+        const firstCard = productsGrid.querySelector('.product-card');
+        if (firstCard) firstCard.classList.add('in-view');
+
+        buildScrollNav(productsToRender);
     }
 
     // Initial Render
     renderProducts(products);
+
+    // ── Scroll-nav dot builder ──
+    function buildScrollNav(productsToRender) {
+        // Remove any existing nav
+        const existing = document.querySelector('.products-scroll-nav');
+        if (existing) existing.remove();
+        if (!productsGrid || productsToRender.length === 0) return;
+
+        const nav = document.createElement('nav');
+        nav.className = 'products-scroll-nav';
+        const cards = productsGrid.querySelectorAll('.product-card');
+
+        cards.forEach((card, i) => {
+            const dot = document.createElement('span');
+            dot.className = 's-dot' + (i === 0 ? ' active' : '');
+            dot.title = productsToRender[i]?.name || '';
+            dot.addEventListener('click', () => {
+                card.scrollIntoView({ behavior: 'smooth' });
+            });
+            nav.appendChild(dot);
+        });
+        document.body.appendChild(nav);
+    }
+
+    function updateScrollNav() {
+        const cards = productsGrid ? productsGrid.querySelectorAll('.product-card') : [];
+        const dots  = document.querySelectorAll('.s-dot');
+        let activeIndex = 0;
+        cards.forEach((card, i) => {
+            if (card.classList.contains('in-view')) activeIndex = i;
+        });
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === activeIndex));
+    }
 
     // Filter Logic
     filterBtns.forEach(btn => {
@@ -386,37 +381,52 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.disabled = true;
             contactResponse.style.display = 'none';
 
-            setTimeout(() => {
+            setTimeout(async () => {
                 try {
-                    // Permanently set to open Gmail to message
-                    const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=yuvarajwork25@gmail.com&su=${encodeURIComponent(subject)}&body=${encodeURIComponent("Name: " + name + "\nEmail: " + email + "\nPhone: " + phone + "\n\nMessage:\n" + message)}`;
+                    // Send to FormSubmit API to directly receive email
+                    const response = await fetch('https://formsubmit.co/ajax/yuvarajwork25@gmail.com', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            name: name,
+                            email: email,
+                            phone: phone,
+                            subject: subject || 'New Contact Form Enquiry',
+                            message: message,
+                            _captcha: "false" // Disable their default captcha since we have our own
+                        })
+                    });
 
-                    // Open Gmail in a new tab
-                    window.open(gmailComposeUrl, '_blank');
+                    if (response.ok) {
+                        // Show success message immediately
+                        btn.classList.remove('fly-anim');
+                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Message Sent!';
+                        btn.classList.replace('btn-primary', 'btn-outline');
+                        btn.style.backgroundColor = '#25d366';
+                        btn.style.borderColor = '#25d366';
+                        btn.style.color = '#fff';
 
-                    // Show success message immediately since they are moved to Gmail
-                    btn.classList.remove('fly-anim');
-                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Redirecting...';
-                    btn.classList.replace('btn-primary', 'btn-outline');
-                    btn.style.backgroundColor = '#25d366';
-                    btn.style.borderColor = '#25d366';
-                    btn.style.color = '#fff';
+                        contactResponse.style.display = 'block';
+                        contactResponse.style.backgroundColor = '#d4edda';
+                        contactResponse.style.color = '#155724';
+                        contactResponse.innerHTML = 'Thank you! Your message has been sent directly to our email.<br><small style="font-size: 0.8rem; opacity: 0.8;">(Site owner: Please check your inbox for an activation email from FormSubmit if this is the first submission)</small>';
 
-                    contactResponse.style.display = 'block';
-                    contactResponse.style.backgroundColor = '#d4edda';
-                    contactResponse.style.color = '#155724';
-                    contactResponse.innerText = 'Opening Gmail securely...';
+                        contactForm.reset();
+                        generateCaptcha();
 
-                    contactForm.reset();
-                    generateCaptcha();
-
-                    setTimeout(() => {
-                        btn.innerHTML = originalText;
-                        btn.classList.replace('btn-outline', 'btn-primary');
-                        btn.style = '';
-                        btn.disabled = false;
-                        contactResponse.style.display = 'none';
-                    }, 4000);
+                        setTimeout(() => {
+                            btn.innerHTML = originalText;
+                            btn.classList.replace('btn-outline', 'btn-primary');
+                            btn.style = '';
+                            btn.disabled = false;
+                            contactResponse.style.display = 'none';
+                        }, 6000);
+                    } else {
+                        throw new Error('Failed to send email via server');
+                    }
                 } catch (error) {
                     console.error('Submission error:', error);
                     btn.classList.remove('fly-anim');
@@ -428,7 +438,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     contactResponse.style.color = '#721c24';
                     contactResponse.innerText = 'Something went wrong. Please try again later.';
                 }
-            }, 700); // Wait 700ms for animation to play before opening new tab
+            }, 700); // Wait 700ms for animation to play before sending
         });
     }
 

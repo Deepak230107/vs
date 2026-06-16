@@ -14,7 +14,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="light-mode">
+<body class="light-mode products-page">
     <div class="loader-wrapper" id="loader">
         <div class="loader"></div>
     </div>
@@ -51,6 +51,7 @@
 
     <!-- Products Section -->
     <section id="products" class="products">
+        <!-- Header + controls in a centred wrapper -->
         <div class="container">
             <div class="section-header reveal">
                 <h2>Our <span class="text-gradient">Products</span></h2>
@@ -60,13 +61,20 @@
             <!-- Featured Product Carousel -->
             <div class="carousel-container reveal">
                 <div class="carousel-track" id="carousel-track">
-                    <!-- Items injected by JS -->
+                    <!-- Carousel items injected by JS from products data below -->
                 </div>
                 <button class="carousel-btn prev-btn" id="prev-btn" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
                 <button class="carousel-btn next-btn" id="next-btn" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
                 <div class="carousel-dots" id="carousel-dots"></div>
             </div>
 
+            <!-- Enquire Now — single CTA above search -->
+            <div class="enquire-bar reveal">
+                <a href="index.html#contact" class="btn-enquire-pro">
+                    <i class="fa-solid fa-phone-volume"></i>
+                    <span>Enquire Now</span>
+                </a>
+            </div>
 
             <!-- Search and Filter -->
             <div class="product-controls reveal">
@@ -81,10 +89,11 @@
                     <button class="filter-btn" data-filter="custom">Custom</button>
                 </div>
             </div>
+        </div>
 
-            <div class="products-grid" id="products-grid">
-                <!-- Product cards injected by JS -->
-            </div>
+        <!-- Full-screen product cards — no container wrapper -->
+        <div class="products-grid" id="products-grid">
+            <!-- Product cards injected by JS from products data below -->
         </div>
     </section>
 
@@ -98,6 +107,67 @@
             </div>
         </div>
     </footer>
+
+    <!-- Products Data (defined here in HTML, read by script.js) -->
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: "Steel Cot",
+                category: "home",
+                description: "Strong double steel cot with good paint.",
+                price: "₹12,500",
+                image: "../assets/images/product_cot_1779976217480.png",
+                video: "../assets/watermark-removed-only_this_product.mp4"
+            },
+            {
+                id: 2,
+                name: "Steel Wardrobe",
+                category: "home",
+                description: "Big 3-door steel almirah with safe lock.",
+                price: "₹15,000",
+                image: "../assets/images/product_wardrobe_1779976231262.png",
+                video: "../assets/watermark-removed-product_be_separated_by_parts.mp4"
+            },
+            {
+                id: 3,
+                name: "Office Table",
+                category: "office",
+                description: "Nice office desk with drawers for your things.",
+                price: "₹8,500",
+                image: "../assets/images/product_table_1779976252061.png",
+                video: "../assets/watermark-removed-yes_generate_video.mp4"
+            },
+            {
+                id: 4,
+                name: "Office Furniture Set",
+                category: "office",
+                description: "Full set of office furniture with desks and chairs.",
+                price: "₹45,000",
+                image: "../assets/images/product_office_1779976267938.png",
+                video: "../assets/watermark-removed-product_be_separated_by_parts (3).mp4"
+
+            },
+            {
+                id: 5,
+                name: "Steel Bunk Bed",
+                category: "home",
+                description: "Strong bed for two people, good for kids.",
+                price: "₹18,000",
+                image: "../assets/images/product_bunk_bed_1781106868469.png",
+                video: "../assets/watermark-removed-product_be_separated_by_parts (2).mp4"
+            },
+            {
+                id: 6,
+                name: "Storage Rack",
+                category: "custom",
+                description: "Strong steel racks made to fit your shop or godown.",
+                price: "Custom",
+                image: "../assets/images/product_storage_rack_1781106885351.png",
+                video: "../assets/watermark-removed-product_be_separated_by_parts (1).mp4"
+            }
+        ];
+    </script>
 
     <!-- Scripts -->
     <script src="script.js"></script>
