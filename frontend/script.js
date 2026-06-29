@@ -311,11 +311,39 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Clear search
             searchInput.value = '';
+
+            // Scroll to grid
+            setTimeout(() => {
+                if (productsGrid) {
+                    const navbarHeight = document.getElementById('navbar').offsetHeight || 80;
+                    const gridPosition = productsGrid.getBoundingClientRect().top + window.scrollY;
+                    window.scrollTo({
+                        top: gridPosition - navbarHeight - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 50);
         });
     });
 
     // Search Logic
     if (searchInput) {
+        // Scroll to grid when user presses Enter
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (productsGrid) {
+                    const navbarHeight = document.getElementById('navbar').offsetHeight || 80;
+                    const gridPosition = productsGrid.getBoundingClientRect().top + window.scrollY;
+                    window.scrollTo({
+                        top: gridPosition - navbarHeight - 20,
+                        behavior: 'smooth'
+                    });
+                }
+                searchInput.blur(); // Dismiss keyboard on mobile
+            }
+        });
+
         searchInput.addEventListener('input', (e) => {
             const searchTerm = e.target.value.toLowerCase();
 
@@ -328,6 +356,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 p.description.toLowerCase().includes(searchTerm)
             );
             renderProducts(filtered);
+            
+            // Scroll to grid on first keystroke if it's far down
+            if (searchTerm.length === 1 && productsGrid) {
+                const rect = productsGrid.getBoundingClientRect();
+                const navbarHeight = document.getElementById('navbar').offsetHeight || 80;
+                if (rect.top > window.innerHeight * 0.7) {
+                    const targetPos = rect.top + window.scrollY - navbarHeight - 20;
+                    window.scrollTo({ top: targetPos, behavior: 'smooth' });
+                }
+            }
         });
     }
 
@@ -374,7 +412,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const phone = document.getElementById('contact-phone').value;
             const subject = document.getElementById('contact-subject').value;
             const message = document.getElementById('contact-message').value;
-            const honeypot = document.getElementById('contact-honeypot').value;
 
             // Add professional fly animation to the paper-plane icon
             btn.classList.add('fly-anim');
@@ -383,50 +420,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setTimeout(async () => {
                 try {
-                    // Send to FormSubmit API to directly receive email
-                    const response = await fetch('https://formsubmit.co/ajax/yuvarajwork25@gmail.com', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            name: name,
-                            email: email,
-                            phone: phone,
-                            subject: subject || 'New Contact Form Enquiry',
-                            message: message,
-                            _captcha: "false" // Disable their default captcha since we have our own
-                        })
+                    // Send email using EmailJS
+                    await emailjs.send("YOUR_SERVICE_ID", "template_dl8rqgk", {
+                        name: name,
+                        email: email,
+                        phone: phone,
+                        subject: subject || 'New Contact Form Enquiry',
+                        message: message
                     });
 
-                    if (response.ok) {
-                        // Show success message immediately
-                        btn.classList.remove('fly-anim');
-                        btn.innerHTML = '<i class="fa-solid fa-check"></i> Message Sent!';
-                        btn.classList.replace('btn-primary', 'btn-outline');
-                        btn.style.backgroundColor = '#25d366';
-                        btn.style.borderColor = '#25d366';
-                        btn.style.color = '#fff';
+                    // Show success message immediately
+                    btn.classList.remove('fly-anim');
+                    btn.innerHTML = '<i class="fa-solid fa-check"></i> Message Sent!';
+                    btn.classList.replace('btn-primary', 'btn-outline');
+                    btn.style.backgroundColor = '#25d366';
+                    btn.style.borderColor = '#25d366';
+                    btn.style.color = '#fff';
 
-                        contactResponse.style.display = 'block';
-                        contactResponse.style.backgroundColor = '#d4edda';
-                        contactResponse.style.color = '#155724';
-                        contactResponse.innerHTML = 'Thank you! Your message has been sent directly to our email.<br><small style="font-size: 0.8rem; opacity: 0.8;">(Site owner: Please check your inbox for an activation email from FormSubmit if this is the first submission)</small>';
+                    contactResponse.style.display = 'block';
+                    contactResponse.style.backgroundColor = '#d4edda';
+                    contactResponse.style.color = '#155724';
+                    contactResponse.innerHTML = 'Thank you! Your message has been sent successfully.';
 
-                        contactForm.reset();
-                        generateCaptcha();
+                    contactForm.reset();
+                    generateCaptcha();
 
-                        setTimeout(() => {
-                            btn.innerHTML = originalText;
-                            btn.classList.replace('btn-outline', 'btn-primary');
-                            btn.style = '';
-                            btn.disabled = false;
-                            contactResponse.style.display = 'none';
-                        }, 6000);
-                    } else {
-                        throw new Error('Failed to send email via server');
-                    }
+                    setTimeout(() => {
+                        btn.innerHTML = originalText;
+                        btn.classList.replace('btn-outline', 'btn-primary');
+                        btn.style = '';
+                        btn.disabled = false;
+                        contactResponse.style.display = 'none';
+                    }, 6000);
                 } catch (error) {
                     console.error('Submission error:', error);
                     btn.classList.remove('fly-anim');

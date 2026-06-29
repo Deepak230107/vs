@@ -271,33 +271,23 @@
                         </div>
                         
                         <!-- Anti-Spam Measures -->
-                       <form action="https://formsubmit.co/yuvarajwork25@gmail.com" method="POST">
+                        <div class="form-row">
+                            <div class="form-group half">
+                                <label id="captcha-question" style="color: var(--text-secondary); margin-bottom: 8px; display: block; font-size: 0.9rem;">
+                                    Security Question: What is 3 + 4?
+                                </label>
+                                <input type="text" id="contact-captcha" placeholder="Answer" required>
+                            </div>
 
-    <input type="hidden" name="_subject" value="New Contact Form Message">
-    <input type="hidden" name="_captcha" value="false">
+                            <div class="form-group half" style="display: flex; align-items: flex-end;">
+                                <button type="submit" class="btn btn-primary w-100" style="height: 50px;">
+                                    Send Message <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
 
-    <div style="display: none;">
-        <input type="text" id="contact-honeypot" name="honeypot" tabindex="-1" autocomplete="off">
-    </div>
-
-    <div class="form-row">
-        <div class="form-group half">
-            <label id="captcha-question" style="color: var(--text-secondary); margin-bottom: 8px; display: block; font-size: 0.9rem;">
-                Security Question: What is 3 + 4?
-            </label>
-            <input type="text" id="contact-captcha" placeholder="Answer" required>
-        </div>
-
-        <div class="form-group half" style="display: flex; align-items: flex-end;">
-            <button type="submit" class="btn btn-primary w-100" style="height: 50px;">
-                Send Message <i class="fa-solid fa-paper-plane"></i>
-            </button>
-        </div>
-    </div>
-
-    <div id="contact-response" style="margin-top: 15px; font-weight: 500; display: none; padding: 10px; border-radius: 5px;"></div>
-
-</form>
+                        <div id="contact-response" style="margin-top: 15px; font-weight: 500; display: none; padding: 10px; border-radius: 5px;"></div>
+                    </form>
 
             <!-- Map -->
             <div class="map-container reveal">
@@ -316,6 +306,10 @@
     </footer>
 
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        emailjs.init("YOUR_PUBLIC_KEY");
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
